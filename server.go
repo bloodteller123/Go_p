@@ -4,6 +4,7 @@ import (
 	videoController "main/controller"
 	middleware "main/middleware"
 	service "main/service"
+	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
@@ -30,7 +31,13 @@ func main() {
 
 	server.POST("/videos", func(ctx *gin.Context) {
 		//
-		ctx.JSON(200, controller.Save(ctx))
+		err := controller.Save(ctx)
+		if err != nil {
+			ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		} else {
+			ctx.JSON(http.StatusOK, gin.H{"message": "OK"})
+		}
+
 	})
 	server.Run(":8080")
 }
