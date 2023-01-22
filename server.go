@@ -2,6 +2,7 @@ package main
 
 import (
 	videoController "main/controller"
+	middleware "main/middleware"
 	service "main/service"
 
 	"github.com/gin-gonic/gin"
@@ -13,7 +14,14 @@ var (
 )
 
 func main() {
-	server := gin.Default()
+	// server := gin.Default()
+	// =
+	// server := gin.New()
+	// server.Use(gin.Recovery())
+	// server.Use(gin.Logger())
+
+	server := gin.New()
+	server.Use(gin.Recovery(), middleware.Logger(), middleware.BasicAuth())
 
 	server.GET("/videos", func(ctx *gin.Context) {
 		//
